@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">備品管理アプリ</string>
+    <string name="edit_message">Enter a message</string>
+    <string name="button_send">Send</string>
+    <string name="title_text">備品管理アプリ</string>
+    <string name="login_btn_text">ログイン</string>
+    <string name="search_name_hint_text">機材名</string>
+    <string name="search_type_hint_text">種類</string>
+    <string name="search_channel_hint_text">番組名</string>
+</resources>
