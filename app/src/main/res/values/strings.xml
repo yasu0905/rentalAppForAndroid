@@ -7,4 +7,6 @@
     <string name="search_name_hint_text">機材名</string>
     <string name="search_type_hint_text">種類</string>
     <string name="search_channel_hint_text">番組名</string>
+    <string name="search_username_hint_text">貸出人</string>
+    <string name="search_btn_text">検索</string>
 </resources>

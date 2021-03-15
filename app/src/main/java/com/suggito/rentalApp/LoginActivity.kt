@@ -24,13 +24,26 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "パスワードが入力されていません。", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val user = LoginUser(emailText.text.toString(), passwordText.text.toString())
-            model.userLogin(user)
+            //val user = LoginUser(emailText.text.toString(), passwordText.text.toString())
+            val email = emailText.text.toString()
+            val password = passwordText.text.toString()
+            model.userLogin(email, password)
             .addOnCompleteListener(this) { result ->
                 if (result.isSuccessful) {
-                    Toast.makeText(applicationContext, "ログイン成功！！", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, SearchActivity::class.java)
-                    startActivity(intent)
+                    model.getUser(email, password)
+                    .addOnSuccessListener { snapshot ->
+
+                        if (snapshot.toObjects(LoginUser::class.java) != null){
+                            Toast.makeText(applicationContext, "ログイン成功！！", Toast.LENGTH_SHORT).show()
+                            val user = snapshot.toObjects(LoginUser::class.java)
+                            val intent = Intent(this, SearchActivity::class.java)
+                            intent.putExtra("user", user[0])
+                            startActivity(intent)
+                        }
+                    }
+                    .addOnFailureListener { err ->
+                        Log.e("Error", err.localizedMessage)
+                    }
                 }else {
                     Toast.makeText(applicationContext, "ログインに失敗しました。EMailかパスワードが間違っています。", Toast.LENGTH_SHORT).show()
                 }

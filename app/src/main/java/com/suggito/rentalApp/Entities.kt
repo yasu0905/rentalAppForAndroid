@@ -1,6 +1,12 @@
 package com.suggito.rentalApp
 
+import java.io.Serializable
+import java.util.*
+
 data class LoginUser(
-   var email: String,
-   var password: String
-){}
+   val authority: String = "",
+   val email: String = "",
+   val password: String = "",
+   val userName: String = "",
+   val createBy: Date = Date()
+): Serializable
