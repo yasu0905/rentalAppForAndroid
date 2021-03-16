@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
                         if (snapshot.toObjects(LoginUser::class.java) != null){
                             Toast.makeText(applicationContext, "ログイン成功！！", Toast.LENGTH_SHORT).show()
                             val user = snapshot.toObjects(LoginUser::class.java)
-                            val intent = Intent(this, SearchActivity::class.java)
+                            val intent = Intent(this, MainActivity::class.java)
                             intent.putExtra("user", user[0])
                             startActivity(intent)
                         }

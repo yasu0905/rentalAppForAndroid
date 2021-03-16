@@ -9,4 +9,15 @@
     <string name="search_channel_hint_text">番組名</string>
     <string name="search_username_hint_text">貸出人</string>
     <string name="search_btn_text">検索</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">ホーム</string>
+    <string name="menu_create_item">機材登録</string>
+    <string name="menu_create_user">ユーザー登録</string>
 </resources>
