@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.suggito.rentalApp.R
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
 
@@ -29,5 +30,19 @@ class HomeFragment : Fragment() {
         return root
     }
 
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        searchBtn.setOnClickListener {
+            val searchData = hashMapOf<String, Any?>(
+                "name" to nameSearchText.text.toString(),
+                "type" to typeSearchText.text.toString(),
+                "search_channel" to channelSearchText.text.toString(),
+                "search_userName" to userNameSearchText.text.toString()
+            )
+            homeViewModel.getItems(searchData).observe(viewLifecycleOwner, Observer {
+                var items = it
+                println(items)
+            })
+        }
+    }
 }
