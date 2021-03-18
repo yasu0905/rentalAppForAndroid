@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/nav_create_item"
-        android:name="com.suggito.rentalApp.ui.gallery.GalleryFragment"
+        android:name="com.suggito.rentalApp.ui.create_item.CreateItemFragment"
         android:label="@string/menu_create_item"
         tools:layout="@layout/fragment_create_item" />
 
     <fragment
         android:id="@+id/nav_create_user"
-        android:name="com.suggito.rentalApp.ui.slideshow.SlideshowFragment"
+        android:name="com.suggito.rentalApp.ui.create_user.CreateUserFragment"
         android:label="@string/menu_create_user"
         tools:layout="@layout/fragment_create_user" />
 </navigation>

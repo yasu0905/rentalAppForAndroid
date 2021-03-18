@@ -20,4 +20,12 @@
     <string name="menu_home">ホーム</string>
     <string name="menu_create_item">機材登録</string>
     <string name="menu_create_user">ユーザー登録</string>
+    <string name="item_create_itemname_hint">機材名を入力してください</string>
+    <string name="item_create_itemtype_hint">機材の種類を入力してください</string>
+    <string name="create_item_button_text">登録</string>
+    <string name="create_user_username_hint">ユーザー名を入力してください</string>
+    <string name="create_user_email_hint">Eメールアドレスを入力してください</string>
+    <string name="create_user_label_text">権限：</string>
+    <string name="create_user_password_hint">パスワードを入力してください</string>
+    <string name="create_user_button_text">登録</string>
 </resources>

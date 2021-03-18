@@ -39,8 +39,7 @@ class HomeFragment : Fragment() {
                 "search_channel" to channelSearchText.text.toString(),
                 "search_userName" to userNameSearchText.text.toString()
             )
-            homeViewModel.getItems(searchData).observe(viewLifecycleOwner, Observer {
-                var items = it
+            homeViewModel.getItems(searchData).observe(viewLifecycleOwner, Observer { items ->
                 println(items)
             })
         }
