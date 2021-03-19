@@ -22,6 +22,9 @@ class ItemListRecyclerViewAdapter(items: MutableList<Items>) : RecyclerView.Adap
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = rItems[position]
+        val viewModel = ItemListViewModel()
+
+        val ref = viewModel.getItemImage(item.url)
         //holder.itemImageCell
         holder.itemNameCell?.text = item.name
     }
