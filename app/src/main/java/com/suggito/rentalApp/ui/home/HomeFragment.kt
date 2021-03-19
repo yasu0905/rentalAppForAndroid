@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.suggito.rentalApp.R
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -20,14 +22,8 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-//        val textView: TextView = root.findViewById(R.id.text_home)
-//        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-//            textView.text = it
-//        })
-        return root
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,9 +35,19 @@ class HomeFragment : Fragment() {
                 "search_channel" to channelSearchText.text.toString(),
                 "search_userName" to userNameSearchText.text.toString()
             )
+            //※LiveDataが存在していたらObserverに入る仕様になっている
             homeViewModel.getItems(searchData).observe(viewLifecycleOwner, Observer { items ->
-                println(items)
+                if (items == null) {
+                    return@Observer
+                }
+                if (items.isEmpty()) {
+                    Toast.makeText(this.context, "検索に該当するデータがありませんでした。", Toast.LENGTH_LONG).show()
+                    return@Observer
+                }
+                val action = HomeFragmentDirections.actionNavHomeToNavItemList(items.toTypedArray())
+                findNavController().navigate(action)
             })
         }
     }
 }
+

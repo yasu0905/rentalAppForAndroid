@@ -9,9 +9,9 @@ import com.suggito.rentalApp.LoginUser
 class HomeViewModel : ViewModel() {
 
     private var model = HomeModel()
-    private var items: MutableLiveData<List<Items>> = MutableLiveData()
+    private var items: MutableLiveData<List<Items>?> = MutableLiveData()
 
-    fun getItems(searchData: Map<String, Any?>): LiveData<List<Items>> {
+    fun getItems(searchData: Map<String, Any?>): LiveData<List<Items>?> {
         model.searchItem(searchData).addOnSuccessListener { snapshot ->
             if (snapshot.toObjects(Items::class.java) != null) {
                 var itemList : MutableList<Items> = mutableListOf()
@@ -19,6 +19,7 @@ class HomeViewModel : ViewModel() {
                     itemList.add(item)
                 }
                 items.value = itemList
+                items.value = null
             }
         }
         return items
