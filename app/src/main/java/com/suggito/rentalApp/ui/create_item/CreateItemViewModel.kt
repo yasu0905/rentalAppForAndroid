@@ -8,6 +8,7 @@ import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.storage.StorageReference
 import com.suggito.rentalApp.Items
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -47,5 +48,9 @@ class CreateItemViewModel : ViewModel() {
             createResult.value = false
         }
         return createResult
+    }
+
+    fun getItemImage(fileName: String): StorageReference {
+        return model.getItemImage(fileName)
     }
 }

@@ -14,6 +14,7 @@ import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.drawToBitmap
@@ -21,11 +22,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.module.AppGlideModule
+import com.suggito.rentalApp.GlideApp
 import com.suggito.rentalApp.Items
 import com.suggito.rentalApp.MainActivity
 import com.suggito.rentalApp.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_create_item.*
+import kotlinx.android.synthetic.main.fragment_create_item.view.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import java.io.File
 import java.io.FileOutputStream
@@ -82,6 +87,13 @@ class CreateItemFragment : Fragment() {
                     findNavController().navigate(R.id.nav_home)
                 })
             })
+        }
+
+        testBtn.setOnClickListener{
+            val ref = createItemViewModel.getItemImage("suika")
+            //val im: ImageView = it.findViewById(R.id.itemImage)
+            GlideApp.with(it.context).load(ref).into(itemImage)
+            //Glide.with(it.context).load(ref).centerInside().into(itemImage)
         }
     }
 

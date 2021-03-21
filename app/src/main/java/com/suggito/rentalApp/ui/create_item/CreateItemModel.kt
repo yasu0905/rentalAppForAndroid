@@ -34,4 +34,9 @@ class CreateItemModel {
     fun addItem(item: Items): Task<DocumentReference> {
         return firestore.collection(ITEM).add(item)
     }
+
+    fun getItemImage(fileName: String): StorageReference {
+        val imageRef = storage.reference.child("item_icon").child("noImage.png")
+        return imageRef
+    }
 }

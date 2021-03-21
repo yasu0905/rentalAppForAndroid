@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.suggito.rentalApp.Items
 import com.suggito.rentalApp.R
 import kotlinx.android.synthetic.main.fragment_item_list_cell.view.*
@@ -23,8 +24,9 @@ class ItemListRecyclerViewAdapter(items: MutableList<Items>) : RecyclerView.Adap
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = rItems[position]
         val viewModel = ItemListViewModel()
-
         val ref = viewModel.getItemImage(item.url)
+//        val ref = viewModel.setItemImage(item.url, holder.itemImageCell!!, holder.itemView.context)
+        Glide.with(holder.itemView.context).load(ref).centerInside().into(holder.itemImageCell!!)
         //holder.itemImageCell
         holder.itemNameCell?.text = item.name
     }
