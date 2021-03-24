@@ -23,6 +23,18 @@ data class Items(
    val name: String = "",
    val type: String = "",
    val url: String = "",
-   val search_channel: List<String> = listOf(),
-   val search_userName: List<String> = listOf()
+   val search_channel: MutableList<String> = mutableListOf<String>(),
+   val search_userName: MutableList<String> = mutableListOf<String>()
+): Parcelable
+
+@Parcelize
+data class Rentals(
+   @DocumentId val id: String = "",
+   val itemName: String = "",
+   val channel: String = "",
+   val userID: String = "",
+   val userName: String = "",
+   val rentalDate: Date = Date(),
+   val returnDate: Date = Date(),
+   val remark: String = ""
 ): Parcelable

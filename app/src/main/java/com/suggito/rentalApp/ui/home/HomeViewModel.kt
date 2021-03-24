@@ -1,5 +1,6 @@
 package com.suggito.rentalApp.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +8,7 @@ import com.suggito.rentalApp.Items
 import com.suggito.rentalApp.LoginUser
 
 class HomeViewModel : ViewModel() {
-
+    private val TAG = "HomeViewModel"
     private var model = HomeModel()
     private var items: MutableLiveData<List<Items>?> = MutableLiveData()
 
@@ -21,6 +22,9 @@ class HomeViewModel : ViewModel() {
                 items.value = itemList
                 items.value = null
             }
+        }
+        .addOnFailureListener { exception ->
+            Log.e(TAG, exception.localizedMessage)
         }
         return items
     }

@@ -21,8 +21,6 @@ import kotlinx.android.synthetic.main.fragment_item_list.view.*
  * A fragment representing a list of Items.
  */
 class ItemListFragment : Fragment() {
-    //private val args: ItemListFragmentArgs by navArgs<>()
-    private var columnCount = 1
     private lateinit var adapter: ItemListRecyclerViewAdapter
     private lateinit var layoutManeger: RecyclerView.LayoutManager
     private lateinit var items: MutableList<Items>
@@ -50,27 +48,10 @@ class ItemListFragment : Fragment() {
             view.addItemDecoration(itemDecoration)
             layoutManeger = LinearLayoutManager(this.context)
             view.layoutManager = layoutManeger
-            adapter = ItemListRecyclerViewAdapter(items)
+            adapter = ItemListRecyclerViewAdapter(items, viewLifecycleOwner)
             view.itemListRCView.adapter = adapter
         }
         return view
 
     }
-
-
-
-//    companion object {
-//
-//        // TODO: Customize parameter argument names
-//        const val ARG_COLUMN_COUNT = "column-count"
-//
-//        // TODO: Customize parameter initialization
-//        @JvmStatic
-//        fun newInstance(columnCount: Int) =
-//            ItemListFragment().apply {
-//                arguments = Bundle().apply {
-//                    putInt(ARG_COLUMN_COUNT, columnCount)
-//                }
-//            }
-//    }
 }

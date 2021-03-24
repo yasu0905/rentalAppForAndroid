@@ -1,6 +1,7 @@
 package com.suggito.rentalApp
 
 import android.content.Context
+import android.text.format.DateFormat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Registry
 import com.bumptech.glide.annotation.GlideModule
@@ -27,6 +28,10 @@ class DateConvert {
                 null
             }
         }
+    }
+
+    fun dateToString(date: Date, pattern: String = "yyyy/MM/dd"): CharSequence? {
+        return DateFormat.format(pattern, date)
     }
 }
 

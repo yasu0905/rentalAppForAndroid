@@ -39,5 +39,35 @@
         <argument
             android:name="items"
             app:argType="com.suggito.rentalApp.Items[]" />
+        <action
+            android:id="@+id/action_nav_item_list_to_nav_rental_list"
+            app:destination="@id/nav_rental_list" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_rental_list"
+        android:name="com.suggito.rentalApp.ui.rental_list.RentalListFragment"
+        android:label="貸出データ一覧"
+        tools:layout="@layout/fragment_rental_list" >
+        <argument
+            android:name="rentals"
+            app:argType="com.suggito.rentalApp.Rentals[]" />
+        <action
+            android:id="@+id/action_nav_rental_list_to_nav_rental_detail"
+            app:destination="@id/nav_rental_detail" />
+        <argument
+            android:name="item"
+            app:argType="com.suggito.rentalApp.Items" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_rental_detail"
+        android:name="com.suggito.rentalApp.ui.rental_detail.RentalDetailFragment"
+        android:label="レンタル"
+        tools:layout="@layout/fragment_rental_detail" >
+        <argument
+            android:name="item"
+            app:argType="com.suggito.rentalApp.Items" />
+        <argument
+            android:name="rental"
+            app:argType="com.suggito.rentalApp.Rentals" />
     </fragment>
 </navigation>

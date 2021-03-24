@@ -28,4 +28,13 @@
     <string name="create_user_label_text">権限：</string>
     <string name="create_user_password_hint">パスワードを入力してください</string>
     <string name="create_user_button_text">登録</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="rental_btn_text_ok">レンタル</string>
+    <string name="rental_btn_text_ng">レンタル中</string>
+    <string name="rental_btn_text_return">返却</string>
+    <string name="date_text_hint">日付を入力</string>
+    <string name="time_text_hint">時刻を入力</string>
+    <string name="channel_text_hint">番組名を入力</string>
+    <string name="remark_text_hint">備考を入力</string>
 </resources>
