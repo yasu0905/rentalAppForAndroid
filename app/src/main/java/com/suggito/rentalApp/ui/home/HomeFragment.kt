@@ -50,6 +50,7 @@ class HomeFragment : Fragment() {
                 "search_userName" to userNameSearchText.text.toString()
             )
             //※LiveDataが存在していたらObserverに入る仕様になっている
+            homeViewModel.removeLiveData(viewLifecycleOwner)
             homeViewModel.getItems(searchData).observe(viewLifecycleOwner, Observer { items ->
                 if (items == null) {
                     return@Observer

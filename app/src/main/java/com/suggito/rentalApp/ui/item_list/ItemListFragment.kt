@@ -1,5 +1,6 @@
 package com.suggito.rentalApp.ui.item_list
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.addCallback
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -33,13 +35,15 @@ class ItemListFragment : Fragment() {
             val args = ItemListFragmentArgs.fromBundle(it)
             items = args.items.toMutableList()
         }
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        //キーボード閉じる
+        closeKeyboard()
+
         val view = inflater.inflate(R.layout.fragment_item_list, container, false)
 
         // Set the adapter
@@ -53,5 +57,13 @@ class ItemListFragment : Fragment() {
         }
         return view
 
+    }
+
+    private fun closeKeyboard() {
+        val v = activity?.currentFocus
+        if (v != null) {
+            val manager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            manager.hideSoftInputFromWindow(v.windowToken, 0)
+        }
     }
 }

@@ -50,9 +50,9 @@ class RentalListRecyclerViewAdapter(item: Items, rentals: MutableList<Rentals>):
         val rental = rRentals[position]
         with(holder) {
             rentalDateCell?.text = dateConvert.dateToString(rental.rentalDate).toString()
-            rentalTimeCell?.text = dateConvert.dateToString(rental.rentalDate, "hh:mm").toString()
+            rentalTimeCell?.text = dateConvert.dateToString(rental.rentalDate, "HH:mm").toString()
             returnDateCell?.text = dateConvert.dateToString(rental.returnDate).toString()
-            returnTimeCell?.text = dateConvert.dateToString(rental.returnDate, "hh:mm").toString()
+            returnTimeCell?.text = dateConvert.dateToString(rental.returnDate, "HH:mm").toString()
             channelCell?.text = rental.channel
             userNameCell?.text = rental.userName
         }

@@ -27,15 +27,46 @@ class RentalDetailModel {
         return firestore.collection(ITEM).document(id).collection(RENTAL)
     }
 
-    fun addRentalData(itemId: String, rental: Rentals): Task<DocumentReference> {
-        return firestore.collection(ITEM).document(itemId).collection(RENTAL).add(rental)
+    fun addRentalData(item: Items, rental: Rentals): Task<Void> {
+        val ref = firestore.collection(ITEM).document(item.id)
+        val subRef = ref.collection(RENTAL)
+
+        return firestore.runBatch {
+            //検索用番組名・ユーザ名の追加
+            item.search_channel.add(rental.channel)
+            item.search_userName.add(rental.userName)
+            ref.set(item)
+//            ref.update(
+//                "search_channel", FieldValue.arrayUnion(rental.channel),
+//                "search_userName", FieldValue.arrayUnion(rental.userName)
+//            )
+
+            //レンタル情報の追加
+            subRef.add(rental)
+        }
     }
 
-    fun getDB(): FirebaseFirestore {
-        return firestore
+    fun getRentalDocuments(itemId: String): Task<QuerySnapshot> {
+        return firestore.collection(ITEM).document(itemId).collection(RENTAL).get()
     }
 
-    fun getItemDocument(itemId: String): DocumentReference {
-        return firestore.collection(ITEM).document(itemId)
+    fun returnRentalData(item: Items, rental: Rentals): Task<Void> {
+        val ref = firestore.collection(ITEM).document(item.id)
+        val subRef = ref.collection(RENTAL).document(rental.id)
+
+        return firestore.runBatch {
+            //検索用番組名・ユーザ名の削除
+            item.search_channel.remove(rental.channel)
+            item.search_userName.remove(rental.userName)
+            ref.set(item)
+//            ref.update(
+//                "search_channel", FieldValue.arrayRemove(rental.channel),
+//                "search_userName", FieldValue.arrayRemove(rental.userName)
+//            )
+
+
+            //レンタル情報の削除
+            subRef.delete()
+        }
     }
 }

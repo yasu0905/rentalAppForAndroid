@@ -3,20 +3,27 @@ package com.suggito.rentalApp.ui.rental_detail
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputType
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.suggito.rentalApp.*
 import kotlinx.android.synthetic.main.fragment_rental_detail.*
 import kotlinx.android.synthetic.main.fragment_rental_detail.view.*
+import java.lang.Exception
+import java.lang.NullPointerException
 import java.util.*
 
 
@@ -45,6 +52,8 @@ class RentalDetailFragment : Fragment() {
         //メインのアクティビティからユーザー情報を取得する
         val main = activity as MainActivity
         loginUser = main.loginUser
+
+
     }
 
     override fun onCreateView(
@@ -52,17 +61,19 @@ class RentalDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this).get(RentalDetailViewModel::class.java)
-        //_binding = NavHeaderMainBinding.inflate(inflater, container, false)
-        //val view = binding.root
         val view = inflater.inflate(R.layout.fragment_rental_detail, container, false)
-//        view.itemNameDetailText.text = item.name
-//        view.userNameDetailText.text = getHeaderUserName(view)
         return view
     }
 
-    @SuppressLint("ResourceAsColor")
+    @SuppressLint("ResourceAsColor", "ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //貸出期間のテキストはキーボード非表示にする
+        rentalDateDetailEditText.keyListener = null
+        rentalTimeDetailEditText.keyListener = null
+        returnDateDetailEditText.keyListener = null
+        returnTimeDetailEditText.keyListener = null
+
         itemNameDetailText.text = item.name
         val userName = loginUser.userName//getHeaderUserName(view)
         val ref = viewModel.getItemImage(item.url)
@@ -78,9 +89,9 @@ class RentalDetailFragment : Fragment() {
             userNameDetailText.text = rental.userName
             channelDetailEditText.setText(rental.channel)
             rentalDateDetailEditText.setText(dateConvert.dateToString(rental.rentalDate, "yyyy年MM月dd日"))
-            rentalTimeDetailEditText.setText(dateConvert.dateToString(rental.rentalDate, "hh:mm"))
+            rentalTimeDetailEditText.setText(dateConvert.dateToString(rental.rentalDate, "HH:mm"))
             returnDateDetailEditText.setText(dateConvert.dateToString(rental.returnDate, "yyyy年MM月dd日"))
-            returnTimeDetailEditText.setText(dateConvert.dateToString(rental.returnDate, "hh:mm"))
+            returnTimeDetailEditText.setText(dateConvert.dateToString(rental.returnDate, "HH:mm"))
             remarkDetailText.setText(rental.remark)
             //EditText非活性
             setTextDisable(view)
@@ -99,6 +110,7 @@ class RentalDetailFragment : Fragment() {
         rentalDateDetailEditText.setOnClickListener {
             showDatePicker(it.rentalDateDetailEditText)
         }
+
 
         rentalDateDetailEditText.addTextChangedListener {
             if (!checkDatetimeText()) {
@@ -142,23 +154,54 @@ class RentalDetailFragment : Fragment() {
 
         rentalBtn.setOnClickListener {
             if (rental.id.isNullOrEmpty()) {
-                //新規
+                //新規登録
+                val rentalData = Rentals(
+                    "",
+                    itemNameDetailText.text.toString(),
+                    channelDetailEditText.text.toString(),
+                    loginUser.id,
+                    loginUser.userName,
+                    convertTextToData(rentalDateDetailEditText, rentalTimeDetailEditText),
+                    convertTextToData(returnDateDetailEditText, returnTimeDetailEditText),
+                    remarkDetailText.text.toString()
+                )
 
+                viewModel.addRentalData(item, rentalData).observe(viewLifecycleOwner, Observer {
+                    if (it == null) {
+                        return@Observer
+                    }
+                    if (!it) {
+                        Toast.makeText(this.context, "登録に失敗しました。", Toast.LENGTH_LONG).show()
+                        return@Observer
+                    }
+                    findNavController().popBackStack(R.id.nav_item_list, false)//popBackStack()
+                })
             } else {
                 //更新
-
+                viewModel.returnRentalData(item, rental).observe(viewLifecycleOwner, Observer {
+                    if (it == null) {
+                        return@Observer
+                    }
+                    if (!it) {
+                        Toast.makeText(this.context, "返却に失敗しました。", Toast.LENGTH_LONG).show()
+                        return@Observer
+                    }
+                    findNavController().popBackStack(R.id.nav_item_list, false)//popBackStack()
+                })
             }
         }
 
     }
 
     private fun checkDateRange() {
-        val dateStringRental = "${rentalDateDetailEditText.text} ${rentalTimeDetailEditText.text}"
-        val dateStringReturn = "${returnDateDetailEditText.text} ${returnTimeDetailEditText.text}"
-        val searchRentalDate = dateConvert.stringToDate(dateStringRental, "yyyy/MM/dd hh:mm")
-        val searchReturnDate = dateConvert.stringToDate(dateStringReturn, "yyyy/MM/dd hh:mm")
 
-        viewModel.rentalDateCheck(item.id, searchRentalDate!!, searchReturnDate!!).addOnSuccessListener { snapshot ->
+        try {
+            val dateStringRental = "${rentalDateDetailEditText.text} ${rentalTimeDetailEditText.text}"
+            val dateStringReturn = "${returnDateDetailEditText.text} ${returnTimeDetailEditText.text}"
+            val searchRentalDate = dateConvert.stringToDate(dateStringRental, "yyyy/MM/dd HH:mm")
+            val searchReturnDate = dateConvert.stringToDate(dateStringReturn, "yyyy/MM/dd HH:mm")
+
+            viewModel.rentalDateCheck(item.id, searchRentalDate!!, searchReturnDate!!).addOnSuccessListener { snapshot ->
                 var result: Boolean = true
                 if (snapshot.toObjects(Rentals::class.java) != null) {
                     for (rental in snapshot.toObjects(Rentals::class.java)) {
@@ -180,6 +223,11 @@ class RentalDetailFragment : Fragment() {
                 Log.e(TAG, exception.localizedMessage)
 
             }
+        } catch (e: NullPointerException) {
+            Log.e(TAG, e.localizedMessage)
+        } catch (e: Exception) {
+            Log.e(TAG, e.localizedMessage)
+        }
     }
 
     private fun changeRentalStatus(result: Boolean) {
@@ -254,4 +302,8 @@ class RentalDetailFragment : Fragment() {
         timePickerDialog?.show()
     }
 
+    private fun convertTextToData(dateText: EditText, timeText: EditText): Date {
+        val dateString = "${dateText.text} ${timeText.text}"
+        return dateConvert.stringToDate(dateString, "yyyy/MM/dd HH:mm")!!
+    }
 }

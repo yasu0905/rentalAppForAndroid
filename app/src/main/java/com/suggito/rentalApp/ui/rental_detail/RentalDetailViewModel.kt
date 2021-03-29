@@ -14,7 +14,9 @@ import java.util.*
 class RentalDetailViewModel : ViewModel() {
     val TAG = "RentalDetailViewModel"
     private var model = RentalDetailModel()
-    //private var isEmptyResult: MutableLiveData<Boolean> = MutableLiveData()
+    private var addResult: MutableLiveData<Boolean> = MutableLiveData()
+    private var returnResult: MutableLiveData<Boolean> = MutableLiveData()
+    private var rentals: MutableLiveData<List<Rentals>?> = MutableLiveData()
 
     fun getItemImage(fileName: String): StorageReference {
         return model.getItemImage(fileName)
@@ -24,26 +26,45 @@ class RentalDetailViewModel : ViewModel() {
         return model.rentalDateCheck(id).get()
     }
 
-    fun addRentalData(itemId: String, rental: Rentals) {
-        model.addRentalData(itemId, rental).addOnSuccessListener {
-            println("Success")
+    fun reloadRentalData(itemId: String): LiveData<List<Rentals>?> {
+        model.getRentalDocuments(itemId).addOnSuccessListener { snapshot ->
+            if (snapshot.toObjects(Rentals::class.java) != null) {
+                var rentalList : MutableList<Rentals> = mutableListOf()
+                for (rental in snapshot.toObjects(Rentals::class.java)) {
+                    rentalList.add(rental)
+                }
+                rentals.value = rentalList
+                rentals.value = null
+            }
         }
         .addOnFailureListener { exception ->
             Log.e(TAG, exception.localizedMessage)
+            rentals.value = null
         }
+        return rentals
     }
 
-    fun updateRentalData(item: Items, rental: Rentals) {
-        val ref = model.getItemDocument(item.id)
-        model.getDB().runTransaction {
-            //機材の更新
-            item.search_channel.add(rental.channel)
-            item.search_userName.add(rental.userName)
-            ref.set(item)
-
-            //レンタル情報の更新
-            ref.collection("rentals").document(rental.id).set(rental)
-
+    fun addRentalData(item: Items, rental: Rentals): LiveData<Boolean> {
+        model.addRentalData(item, rental).addOnSuccessListener {
+            println("Success")
+            addResult.value = true
         }
+        .addOnFailureListener { exception ->
+            Log.e(TAG, exception.localizedMessage)
+            addResult.value = false
+        }
+        return addResult
+    }
+
+    fun returnRentalData(item: Items, rental: Rentals): LiveData<Boolean> {
+        model.returnRentalData(item, rental).addOnSuccessListener {
+            println("Success")
+            returnResult.value = true
+        }
+        .addOnFailureListener { exception ->
+            Log.e(TAG, exception.localizedMessage)
+            returnResult.value = false
+        }
+        return returnResult
     }
 }

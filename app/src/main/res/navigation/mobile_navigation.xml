@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_nav_item_list_to_nav_rental_list"
             app:destination="@id/nav_rental_list" />
+        <action
+            android:id="@+id/action_nav_item_list_to_nav_home"
+            app:popUpTo="@id/nav_home" />
     </fragment>
     <fragment
         android:id="@+id/nav_rental_list"
@@ -57,6 +60,9 @@
         <argument
             android:name="item"
             app:argType="com.suggito.rentalApp.Items" />
+        <action
+            android:id="@+id/action_nav_rental_list_to_nav_item_list"
+            app:popUpTo="@id/nav_item_list" />
     </fragment>
     <fragment
         android:id="@+id/nav_rental_detail"
@@ -69,5 +75,9 @@
         <argument
             android:name="rental"
             app:argType="com.suggito.rentalApp.Rentals" />
+        <action
+            android:id="@+id/action_nav_rental_detail_to_nav_rental_list"
+            app:destination="@id/nav_rental_list"
+            app:popUpTo="@id/nav_rental_list" />
     </fragment>
 </navigation>

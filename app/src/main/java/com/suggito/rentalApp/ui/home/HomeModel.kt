@@ -30,10 +30,10 @@ class HomeModel {
         if (!searchData["type"].toString().isNullOrEmpty()) {
             query = query.whereEqualTo("type", searchData["type"].toString())
         }
-        if (!searchData["search_channel"].toString().isNullOrEmpty()) {
+        if (!searchData["search_channel"].toString().isNullOrEmpty() && searchData["search_userName"].toString().isNullOrEmpty()) {
             query = query.whereArrayContains("search_channel", searchData["search_channel"].toString())
         }
-        if (!searchData["search_userName"].toString().isNullOrEmpty()) {
+        if (!searchData["search_userName"].toString().isNullOrEmpty() && searchData["search_channel"].toString().isNullOrEmpty()) {
             query = query.whereArrayContains("search_userName", searchData["search_userName"].toString())
         }
         return query

@@ -41,10 +41,6 @@ class ItemListRecyclerViewAdapter(items: MutableList<Items>, parentLifecycleOwne
                 if (rentals == null) {
                     return@Observer
                 }
-//                if (rentals.isEmpty()) {
-//                    Toast.makeText(it.context, "検索に該当するデータがありませんでした。", Toast.LENGTH_LONG).show()
-//                    return@Observer
-//                }
 
                 val action = ItemListFragmentDirections.actionNavItemListToNavRentalList(rentals.toTypedArray(), item)
                 it.findNavController().navigate(action)

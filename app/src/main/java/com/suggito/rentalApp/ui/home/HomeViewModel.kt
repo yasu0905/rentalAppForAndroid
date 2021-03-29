@@ -1,6 +1,7 @@
 package com.suggito.rentalApp.ui.home
 
 import android.util.Log
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,6 +14,7 @@ class HomeViewModel : ViewModel() {
     private var items: MutableLiveData<List<Items>?> = MutableLiveData()
 
     fun getItems(searchData: Map<String, Any?>): LiveData<List<Items>?> {
+
         model.searchItem(searchData).addOnSuccessListener { snapshot ->
             if (snapshot.toObjects(Items::class.java) != null) {
                 var itemList : MutableList<Items> = mutableListOf()
@@ -27,6 +29,10 @@ class HomeViewModel : ViewModel() {
             Log.e(TAG, exception.localizedMessage)
         }
         return items
+    }
+
+    fun removeLiveData(owner: LifecycleOwner) {
+        items.removeObservers(owner)
     }
 
 //    private val _text = MutableLiveData<String>().apply {

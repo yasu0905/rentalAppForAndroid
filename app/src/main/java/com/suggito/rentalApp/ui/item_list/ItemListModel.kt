@@ -28,7 +28,7 @@ class ItemListModel {
     }
 
     fun getItemHasRentalData(id: String): Task<QuerySnapshot> {
-        return firestore.collection(ITEM).document(id).collection(RENTAL).get()
+        return firestore.collection(ITEM).document(id).collection(RENTAL).orderBy("rentalDate").get()
     }
 
 }
